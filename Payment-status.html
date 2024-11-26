@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            
+
+       margin: 0;
+       padding: 0;
+       display: flex;
+       justify-content: center;
+      align-items: center;
+       height: 100vh;
+
+        
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #ff5722;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .continuing {
+            color: red;
+        }
+
+        .done {
+            color: green;
+        }
+
+        .error {
+            color: black;
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .icon.spinner {
+            animation: spin 2s infinite linear;
+        }
+
+        .user-details {
+            font-size: 14px;
+            margin-top: 20px;
+            font-weight: normal;
+            color: #444;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-check-circle"></i> Payment Status</h2>
+
+        <!-- Display User Details -->
+        <div id="userDetails" class="user-details">
+            <p><strong>Phone:</strong> <span id="phone">naN</span></p>
+            <p><strong>Transaction ID:</strong> <span id="transactionId">naN</span></p>
+            <p><strong>Amount:</strong> ৳<span id="amount">naN</span></p>
+        </div>
+
+        <div id="statusIcon" class="icon spinner">
+            <i class="fas fa-spinner"></i>
+        </div>
+
+        <div id="statusMessage" class="message continuing">
+            Payment is continuing...
+        </div>
+        <style>
+  .note {
+       margin-top:30px;
+            padding: 10px;
+            width:95%;
+            background-color: #FF5722;
+            color: #fff;
+            border-radius: 10%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
+            text-align: center;
+        
+            font-size: 10px;
+            font-weight: bold;
+            animation: pulse 3s infinite; /* Regular pulse animation */
+        }
+
+
+  /* Pulse Animation */
+  @keyframes pulse {
+  0% {
+  transform: scale(1);
+  }
+  50% {
+  transform: scale(1.1); /* Slightly increase the size */
+  }
+  100% {
+  transform: scale(1);
+  }
+  }
+     
+    </style>
+
+    <div class="note" id="emergencyNote">
+        <i class="fas fa-exclamation-triangle"></i> Do not exit this page until the results are displayed.
+    </div>
+
+    <script>
+        const emergencyNote = document.getElementById('emergencyNote');
+
+        // Show and animate the note after 3 seconds
+        setTimeout(() => {
+            emergencyNote.style.display = "block"; // Make it visible after 3 seconds
+        }, 3000);
+    </script>   
+    </div>
+ <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDeoS_Px31_c1F7ph05MrpCqPdvou4TDbw",
+            authDomain: "payment-48193.firebaseapp.com",
+            databaseURL: "https://payment-48193-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "payment-48193",
+            storageBucket: "payment-48193.firebasestorage.app",
+            messagingSenderId: "233832319655",
+            appId: "1:233832319655:web:31bb818afbad9fb4e56982"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Extract the paymentId from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('paymentId');
+
+        // Check payment status in Firebase
+        const paymentRef = ref(database, 'payments/' + paymentId);
+        const statusMessage = document.getElementById('statusMessage');
+        const statusIcon = document.getElementById('statusIcon');
+        const userDetails = document.getElementById('userDetails');
+        const phone = document.getElementById('phone');
+        const transactionId = document.getElementById('transactionId');
+        const amount = document.getElementById('amount');
+
+        // Check if payment status is updated
+        get(paymentRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const paymentData = snapshot.val();
+                const status = paymentData.status;
+
+                // Display user details
+                phone.textContent = paymentData.phone || "Not Provided";
+                transactionId.textContent = paymentData.transactionId || "Not Provided";
+                amount.textContent = paymentData.amount || "Not Provided";
+
+                // If the status is "Done", change icon color to green and update the message
+                if (status === 'Done') {
+                    statusMessage.textContent = 'Payment done!';
+                    statusMessage.className = 'message done';
+                    statusIcon.innerHTML = '<i class="fas fa-check-circle"></i>';
+                    statusIcon.className = 'icon done';
+                } 
+                // If the status is "no" or any other incomplete status, show error message
+                else if (status === 'No' || status === 'E') {
+                    statusMessage.textContent = 'Payment failed.';
+                    statusMessage.className = 'message error';
+                    statusIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                    statusIcon.className = 'icon error';
+                }
+                // If still continuing, keep the loading icon and red color
+                else {
+                    statusMessage.textContent = 'Payment is continuing...';
+                    statusMessage.className = 'message continuing';
+                    statusIcon.innerHTML = '<i class="fas fa-spinner"></i>';
+                    statusIcon.className = 'icon spinner';
+                }
+            } else {
+                statusMessage.textContent = 'No payment found!';
+                statusMessage.className = 'message error';
+                statusIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+                statusIcon.className = 'icon error';
+            }
+        }).catch((error) => {
+            statusMessage.textContent = 'Error fetching payment status.';
+            statusMessage.className = 'message error';
+            statusIcon.innerHTML = '<i class="fas fa-exclamation-circle"></i>';
+            statusIcon.className = 'icon error';
+            console.error(error);
+        });
+    </script>
+   </body>
+</html>
