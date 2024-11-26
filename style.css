@@ -1,0 +1,105 @@
+
+ 
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            
+
+       margin: 0;
+       padding: 0;
+       display: flex;
+       justify-content: center;
+      align-items: center;
+       height: 100vh;
+
+        
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #ff5722;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .continuing {
+            color: red;
+        }
+
+        .done {
+            color: green;
+        }
+
+        .error {
+            color: black;
+        }
+
+        .icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .icon.spinner {
+            animation: spin 2s infinite linear;
+        }
+
+        .user-details {
+            font-size: 14px;
+            margin-top: 20px;
+            font-weight: normal;
+            color: #444;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+   
+   
+   
+   
+   
+   
+     .note {
+       margin-top:30px;
+            padding: 10px;
+            width:95%;
+            background-color: #FF5722;
+            color: #fff;
+            border-radius: 10%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 1);
+            text-align: center;
+        
+            font-size: 10px;
+            font-weight: bold;
+            animation: pulse 3s infinite; /* Regular pulse animation */
+        }
+
+
+  /* Pulse Animation */
+  @keyframes pulse {
+  0% {
+  transform: scale(1);
+  }
+  50% {
+  transform: scale(1.1); /* Slightly increase the size */
+  }
+  100% {
+  transform: scale(1);
+  }
+  }
+      

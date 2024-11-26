@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Status</title>
+
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fas fa-check-circle"></i> Payment Status</h2>
+
+        <!-- Display User Details -->
+        <div id="userDetails" class="user-details">
+            <p><strong>Phone:</strong> <span id="phone">naN</span></p>
+            <p><strong>Transaction ID:</strong> <span id="transactionId">naN</span></p>
+            <p><strong>Amount:</strong> ৳<span id="amount">naN</span></p>
+        </div>
+
+        <div id="statusIcon" class="icon spinner">
+            <i class="fas fa-spinner"></i>
+        </div>
+
+        <div id="statusMessage" class="message continuing">
+            Payment is continuing...
+        </div>
+      <div class="note" id="emergencyNote">
+        <i class="fas fa-exclamation-triangle"></i> Do not exit this page until the results are displayed.
+    </div>
+
+ </div>
+    
+ <script src="live.js" type="module">
+        
+    </script>
+    
+  </body>
+</html>
